@@ -41,12 +41,22 @@ void fluids_set_with_function(float* const q,
 /******************************************************************************
 ** Fluid Source
 ******************************************************************************/
-/* Applies a source [source] to a quantity field [quantities]. [alpha] 
+/* Applies a source [source] to a quantity field [q]. [alpha] 
 ** describes the amount of the source added to the quantity. Each value q in 
 ** [quantities] is incremented by [alpha] * s, where s is the source 
 ** corresponding to q in [source]. */ 
-void fluids_add_source(float* const quantities, const float* const source, 
-	float alpha);
+void fluids_add_source(float* const q, const float* const source, float alpha);
+
+/* Applies a source to a quantity field. Values of the quantity field where the
+** source is greater than zero converge to a [target] value. The actual equation
+** is given by:
+**
+** 	q += (q - [target]) * s; 
+**
+** where q is in [q] and s is the corresponding source value in [source]. 
+** WARNING: values of s should be bound to [0, 1]*/
+void fluids_add_source_with_target(float* const q, const float* const source, 
+	float q_target);
 
 /******************************************************************************
 ** Fluid Boundary Handling
@@ -56,7 +66,9 @@ enum {
 	** quantity of the nearest cell that is not a boundary cell. */
 	FLUIDS_BOUNDARY_NN = 0,
 	FLUIDS_BOUNDARY_NO_STICK_U,
-	FLUIDS_BOUNDARY_NO_STICK_V
+	FLUIDS_BOUNDARY_NO_STICK_V,
+	FLUIDS_BOUNDARY_REFLECT_U,
+	FLUIDS_BOUNDARY_REFLECT_V
 };
 
 /******************************************************************************
@@ -84,6 +96,22 @@ void fluids_diffuse(float* const q, const float* const q_prev,
 ** projection and the pressure. */ 
 void fluids_project(float* const u, float* const v, int boundary_u, 
 	int boundary_v, float* const p, float* const div, int iteration_count);
+
+/******************************************************************************
+** Buoyancy
+******************************************************************************/
+/* Applies buoyancy the v component of the velocity field [v]. The equation 
+** for updating [v] is given by:
+**
+** 	v -= [dt] * ([alpha] * s - [beta] * (t - [temp_ambient])
+**
+** where v is in [v], s is a value in [smoke_dens] corresponding to v and t
+** is a value in [temperatures] corresponding to v.
+*/
+void fluids_add_buoyancy(float* const v, const float* const smoke_dens, 
+	const float* const temperatures, float alpha, float beta, 
+	float temp_ambient, float dt);
+
 
 #ifdef __cplusplus
 }

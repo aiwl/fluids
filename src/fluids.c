@@ -68,6 +68,31 @@ static void set_boundary_no_stick_u(float* const q)
 		q[IDX(g_cell_count_i - 1, g_cell_count_j - 2)]);
 }
 
+static void set_boundary_reflect_u(float* const q)
+{
+	int i = 0, j = 0;	
+
+	for (i = 1; i < g_cell_count_i - 1; i++) {
+		q[IDX(i, 0)] = q[IDX(i, 1)];
+		q[IDX(i, g_cell_count_j - 1)] = q[IDX(i, g_cell_count_j - 2)];
+	}
+
+	for (j = 1; j < g_cell_count_j - 1; j++) {
+		q[IDX(0, j)] = -q[IDX(1, j)];
+		q[IDX(g_cell_count_i - 1, j)] = 
+			-q[IDX(g_cell_count_i - 2, j)];
+	}
+
+	q[IDX(0, 0)] = 0.5 * (q[IDX(0, 1)] + q[IDX(1, 0)]);
+	q[IDX(g_cell_count_i - 1, 0)] = 0.5 * (q[IDX(g_cell_count_i - 1, 1)] + 
+		q[IDX(g_cell_count_i - 2, 0)]);
+	q[IDX(0, g_cell_count_j - 1)] = 0.5 * (q[IDX(0, g_cell_count_j - 2)] + 
+		q[IDX(1, g_cell_count_j - 1)]);
+	q[IDX(g_cell_count_i - 1, g_cell_count_j - 1)] = 0.5 * (
+		q[IDX(g_cell_count_i - 2, g_cell_count_j - 1)] + 
+		q[IDX(g_cell_count_i - 1, g_cell_count_j - 2)]);
+}
+
 static void set_boundary_no_stick_v(float* const q)
 {
 	int i = 0, j = 0;	
@@ -75,6 +100,31 @@ static void set_boundary_no_stick_v(float* const q)
 	for (i = 1; i < g_cell_count_i - 1; i++) {
 		q[IDX(i, 0)] = 0.0;
 		q[IDX(i, g_cell_count_j - 1)] = 0.0; 
+	}
+
+	for (j = 1; j < g_cell_count_j - 1; j++) {
+		q[IDX(0, j)] = q[IDX(1, j)];
+		q[IDX(g_cell_count_i - 1, j)] = 
+			q[IDX(g_cell_count_i - 2, j)];
+	}
+
+	q[IDX(0, 0)] = 0.5 * (q[IDX(0, 1)] + q[IDX(1, 0)]);
+	q[IDX(g_cell_count_i - 1, 0)] = 0.5 * (q[IDX(g_cell_count_i - 1, 1)] + 
+		q[IDX(g_cell_count_i - 2, 0)]);
+	q[IDX(0, g_cell_count_j - 1)] = 0.5 * (q[IDX(0, g_cell_count_j - 2)] + 
+		q[IDX(1, g_cell_count_j - 1)]);
+	q[IDX(g_cell_count_i - 1, g_cell_count_j - 1)] = 0.5 * (
+		q[IDX(g_cell_count_i - 2, g_cell_count_j - 1)] + 
+		q[IDX(g_cell_count_i - 1, g_cell_count_j - 2)]);
+}
+
+static void set_boundary_reflect_v(float* const q)
+{
+	int i = 0, j = 0;	
+
+	for (i = 1; i < g_cell_count_i - 1; i++) {
+		q[IDX(i, 0)] = -q[IDX(i, 1)];
+		q[IDX(i, g_cell_count_j - 1)] = -q[IDX(i, g_cell_count_j - 2)];
 	}
 
 	for (j = 1; j < g_cell_count_j - 1; j++) {
@@ -102,6 +152,8 @@ void fluids_initialize()
 	set_boundary[FLUIDS_BOUNDARY_NN] = set_boundary_nn;
 	set_boundary[FLUIDS_BOUNDARY_NO_STICK_U] = set_boundary_no_stick_u;
 	set_boundary[FLUIDS_BOUNDARY_NO_STICK_V] = set_boundary_no_stick_v;
+	set_boundary[FLUIDS_BOUNDARY_REFLECT_U] = set_boundary_reflect_u;
+	set_boundary[FLUIDS_BOUNDARY_REFLECT_V] = set_boundary_reflect_v;
 }
 
 void fluids_set_grid(float origin_x, float origin_y, float dx, 
@@ -198,6 +250,21 @@ void fluids_add_source(float* const q, const float* const source,
 			q[idx] += alpha * source[idx];
 		}
 	}
+}
+
+
+void fluids_add_source_with_target(float* const q, const float* const source,
+	float q_target)
+{
+	int i = 0, j = 0;
+	int idx = 0;
+
+	for (j = 0; j < g_cell_count_j; j++) {
+		for (i = 0; i < g_cell_count_i; i++) {
+			idx = IDX(i, j);	
+			q[idx] += (q_target - q[idx])*  source[idx];
+		}
+	}	
 }
 	
 void fluids_advect(float* const q, const float* const q_prev, 
@@ -296,3 +363,18 @@ void fluids_project(float* const u, float* const v, int boundary_u,
 	(*set_boundary[boundary_u])(u);
 	(*set_boundary[boundary_v])(v);
 }
+
+void fluids_add_buoyancy(float* const v, const float* const smoke_dens, 
+	const float* const temperatures, float alpha, float beta, 
+	float temp_ambient, float dt)
+{
+	int i = 0, j = 0;
+
+	for (j = 1; j < g_cell_count_j - 1; j++) {
+		for (i = 1; i < g_cell_count_i - 1; i++) {
+			v[IDX(i,j)] -= dt * (alpha * smoke_dens[IDX(i,j)] - 
+				beta * (temperatures[IDX(i,j )] - temp_ambient)); 
+		}
+	}
+}
+
