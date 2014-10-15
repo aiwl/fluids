@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>1CC9F8D9-32BD-4AD3-81A2-219AA50DF9A6</string>
+	<key>IDESourceControlProjectName</key>
+	<string>viz</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>2BEA80BA-3259-4D7D-9AF1-B2C1EB1BDB99</key>
+		<string>https://bitbucket.org/thisisscatterbrain/stable-fluids.git</string>
+		<key>B79CFDF0-8525-4F02-B939-0A5146FC6A07</key>
+		<string>https://github.com/glfw/glfw</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>tests/viz/viz/viz.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>2BEA80BA-3259-4D7D-9AF1-B2C1EB1BDB99</key>
+		<string>../../../../..</string>
+		<key>B79CFDF0-8525-4F02-B939-0A5146FC6A07</key>
+		<string>../../../../../../../Libraries/glfw</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://bitbucket.org/thisisscatterbrain/stable-fluids.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>2BEA80BA-3259-4D7D-9AF1-B2C1EB1BDB99</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B79CFDF0-8525-4F02-B939-0A5146FC6A07</string>
+			<key>IDESourceControlWCCName</key>
+			<string>glfw</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2BEA80BA-3259-4D7D-9AF1-B2C1EB1BDB99</string>
+			<key>IDESourceControlWCCName</key>
+			<string>stable-fluids</string>
+		</dict>
+	</array>
+</dict>
+</plist>
