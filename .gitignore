@@ -1,0 +1,38 @@
+.DS_Store
+*.swp
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+.DS_STORE
+.swp
+.clang_complete
+.dSYM
+
+include/
+lib/
+doc/
+bin/
