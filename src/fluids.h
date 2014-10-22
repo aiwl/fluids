@@ -41,11 +41,18 @@ void fluids_set_with_function(float* const q,
 /******************************************************************************
 ** Fluid Source
 ******************************************************************************/
-/* Applies a source [source] to a quantity field [q]. [alpha] 
-** describes the amount of the source added to the quantity. Each value q in 
-** [quantities] is incremented by [alpha] * s, where s is the source 
-** corresponding to q in [source]. */ 
+/* Applies a source [source] to a quantity field [q]. [alpha] describes the
+** amount of the source added to the quantity. Each value q in [quantities] is
+** incremented by [alpha] * s, where s is the source corresponding to q in
+** [source]. */
 void fluids_add_source(float* const q, const float* const source, float alpha);
+
+/* Applies a source [source] to a quantity field [q]. [alpha] describes the
+** amount of the source added to the quantity. Each value q in [quantities] is
+** incremented by [alpha] * s, where s is the source corresponding to q in
+** [source]. Each value q is bound to be [q_min] <= q <= [q_max].*/
+void fluids_add_source_clamped(float* const q, const float* const source,
+	float alpha, float q_min, float q_max);
 
 /* Applies a source to a quantity field. Values of the quantity field where the
 ** source is greater than zero converge to a [target] value. The actual equation
@@ -54,7 +61,7 @@ void fluids_add_source(float* const q, const float* const source, float alpha);
 ** 	q += (q - [target]) * s; 
 **
 ** where q is in [q] and s is the corresponding source value in [source]. 
-** WARNING: values of s should be bound to [0, 1]*/
+** WARNING: values of s should be bound to [0, 1] */
 void fluids_add_source_with_target(float* const q, const float* const source, 
 	float q_target);
 
@@ -106,12 +113,19 @@ void fluids_project(float* const u, float* const v, int boundary_u,
 ** 	v -= [dt] * ([alpha] * s - [beta] * (t - [temp_ambient])
 **
 ** where v is in [v], s is a value in [smoke_dens] corresponding to v and t
-** is a value in [temperatures] corresponding to v.
-*/
+** is a value in [temperatures] corresponding to v. */
 void fluids_add_buoyancy(float* const v, const float* const smoke_dens, 
 	const float* const temperatures, float alpha, float beta, 
 	float temp_ambient, float dt);
 
+
+/******************************************************************************
+** Statistics
+******************************************************************************/
+/* Get the average divergence across the velocity field ([u], [v]). Stores the
+** divergence per grid cell in [div]. */
+float fluids_get_max_divergence(const float* const u, const float* const v,
+	float* const div);
 
 #ifdef __cplusplus
 }

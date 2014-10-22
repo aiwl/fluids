@@ -237,6 +237,23 @@ void fluids_set_with_function(float* const q,
 		}
 	}
 }
+
+void fluids_add_source_clamped(float* const q, const float* const source,
+	float alpha, float q_min, float q_max)
+{
+	int i = 0, j = 0;
+	int idx = 0;
+
+	for (j = 0; j < g_cell_count_j; j++) {
+		for (i = 0; i < g_cell_count_i; i++) {
+			idx = IDX(i, j);	
+			q[idx] += alpha * source[idx];
+			
+			q[idx] = q[idx] > q_max ? q_max : q[idx];
+			q[idx] = q[idx] < q_min ? q_min : q[idx];
+		}
+	}
+}
 	
 void fluids_add_source(float* const q, const float* const source, 
 	float alpha)
@@ -251,7 +268,6 @@ void fluids_add_source(float* const q, const float* const source,
 		}
 	}
 }
-
 
 void fluids_add_source_with_target(float* const q, const float* const source,
 	float q_target)
@@ -376,5 +392,27 @@ void fluids_add_buoyancy(float* const v, const float* const smoke_dens,
 				beta * (temperatures[IDX(i,j )] - temp_ambient)); 
 		}
 	}
+}
+
+float fluids_get_max_divergence(const float* const u, const float* const v,
+	float* const div)
+{
+	int i = 0, j = 0;
+	float avg_div = 0.0;
+
+	/* compute divergence of the velocity field and set pressure to 0 */
+	for (j = 1; j < g_cell_count_j - 1; j++) {
+		for (i = 1; i < g_cell_count_i - 1; i++) {
+			div[IDX(i, j)] =  (
+				u[IDX(i + 1, j)] -
+				u[IDX(i - 1, j)] +
+				v[IDX(i, j + 1)] -
+				v[IDX(i, j - 1)]) / (2.0 * g_dx);
+				
+			avg_div = div[IDX(i, j)] > avg_div ? div[IDX(i, j)] : avg_div;
+		}
+	}
+	
+	return avg_div;
 }
 

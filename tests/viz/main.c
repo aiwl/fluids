@@ -9,14 +9,14 @@
 
 /* window settings */
 static int g_window_width = 800;
-static int g_window_height = 800;
+static int g_window_height = 600;
 
 /* fluid domain declarations */
 static float g_origin_x = -1.0;
 static float g_origin_y = -1.0;
-static float g_dx = 0.01;
-static int g_cell_count_i = 200;
-static int g_cell_count_j = 200;
+static float g_dx = 0.02;
+static int g_cell_count_i = 100 * 1.333333;
+static int g_cell_count_j = 100;
 
 /* fluid quantities */
 static float* g_temperatures[2];
@@ -28,11 +28,13 @@ static float* g_vel_divs;
 
 /* quantity sources */
 static float* g_temp_source;
+static float* g_smoke_dens_source;
 
 /* simulation constants */
-static const float g_temp_ambient = 273.3;
-static const float g_temp_target = 973.3;
-static const float g_dt = 0.04;
+static const float g_temp_init = 270.0;
+static const float g_temp_ambient = 300.0;
+static const float g_temp_target = 700.0;
+static const float g_dt = 0.05;
 
 /* user input */
 static int g_is_clicked = 0;
@@ -43,12 +45,25 @@ static float g_cursor_y = 400;
 /* quantity initializer functions */
 static float set_temp_src(float x, float y, void* const vp)
 {
-	float r = 0.15;
+	float r = 0.125;
 	float x0 = g_origin_x + (g_cursor_x / g_window_width) * g_cell_count_i * g_dx;
 	float y0 = g_origin_y + (g_cursor_y / g_window_height) * g_cell_count_j * g_dx;
 	
 	if ((x - x0) * (x - x0) + (y - y0) * (y - y0) <= r * r) {
 		return 1.0;
+	}
+	
+	return 0.0;
+}
+
+static float set_smoke_dens_src(float x, float y, void* const vp)
+{
+	float r = 0.125;
+	float x0 = g_origin_x + (g_cursor_x / g_window_width) * g_cell_count_i * g_dx;
+	float y0 = g_origin_y + (g_cursor_y / g_window_height) * g_cell_count_j * g_dx;
+	
+	if ((x - x0) * (x - x0) + (y - y0) * (y - y0) <= r * r) {
+		return 0.5;
 	}
 	
 	return 0.0;
@@ -69,8 +84,8 @@ static void initialize()
 		g_cell_count_j);
 
 	/* init fluid quantities */
-	g_temperatures[0] = fluids_malloc(g_temp_ambient);
-	g_temperatures[1] = fluids_malloc(g_temp_ambient);
+	g_temperatures[0] = fluids_malloc(273.0);
+	g_temperatures[1] = fluids_malloc(273.0);
 	g_smoke_densities[0] = fluids_malloc(0.0);
 	g_smoke_densities[1] = fluids_malloc(0.0);
 	g_us[0] = fluids_malloc(0.0);
@@ -82,36 +97,30 @@ static void initialize()
 	
 	/* init sources */
 	g_temp_source = fluids_malloc(0);
-	fluids_set_with_function(g_temp_source, set_temp_src, NULL);
+	g_smoke_dens_source = fluids_malloc(0);
 		
 	/* init renderer */
 	quantity_renderer_initialize(g_cell_count_i, g_cell_count_j);
-	quantity_renderer_set_quantity_domain(g_temp_ambient, g_temp_target);
+	quantity_renderer_set_quantity_domain(g_temp_init+50, g_temp_target);
 	velocity_renderer_initialize(g_cell_count_i, g_cell_count_j, g_dx);
-	velocity_renderer_set_sample_freq(4);
+	velocity_renderer_set_sample_freq(2);
 	velocity_renderer_set_alpha(0.5);
 	velocity_renderer_set_scale(0.05);
 }
 
-static void do_vel_step()
+static void do_smoke_dens_step()
 {
-	/* update velocities */
-	fluids_add_buoyancy(g_vs[0], g_smoke_densities[0], g_temperatures[0],
-		0.0, 0.0025, g_temp_ambient, g_dt);
-	swap(g_us);
-	fluids_diffuse(g_us[0], g_us[1], 0.5, 20, FLUIDS_BOUNDARY_REFLECT_U,
-		g_dt);
-	swap(g_vs);
-	fluids_diffuse(g_vs[0], g_vs[1], 0.5, 20, FLUIDS_BOUNDARY_REFLECT_V,
-		g_dt);
-	swap(g_us);
-	swap(g_vs);
-	fluids_advect(g_us[0], g_us[1] , g_us[1], g_vs[1],
-		FLUIDS_BOUNDARY_REFLECT_U, g_dt);
-	fluids_advect(g_vs[0], g_vs[1] , g_us[1], g_vs[1],
-		FLUIDS_BOUNDARY_REFLECT_V, g_dt);
-	fluids_project(g_us[0], g_vs[0], FLUIDS_BOUNDARY_REFLECT_U,
-		FLUIDS_BOUNDARY_REFLECT_V, g_pressures, g_vel_divs, 100);
+	if (g_is_clicked) {
+		fluids_add_source_clamped(g_smoke_densities[0],
+			g_smoke_dens_source, 1.0, 0.0, 1.0);
+	}
+	
+	swap(g_smoke_densities);
+	fluids_advect(g_smoke_densities[0], g_smoke_densities[1], g_us[0],
+		g_vs[0], FLUIDS_BOUNDARY_NN, g_dt);
+	swap(g_smoke_densities);
+	fluids_diffuse(g_smoke_densities[0], g_smoke_densities[1], 10.8, 60,
+		FLUIDS_BOUNDARY_NN, g_dt);
 }
 
 static void do_temp_step()
@@ -125,20 +134,49 @@ static void do_temp_step()
 	fluids_advect(g_temperatures[0], g_temperatures[1], g_us[0], g_vs[0],
 		FLUIDS_BOUNDARY_NN, g_dt);
 	swap(g_temperatures);
-	fluids_diffuse(g_temperatures[0], g_temperatures[1], 10.8, 20,
+	fluids_diffuse(g_temperatures[0], g_temperatures[1], 0.8, 20,
 		FLUIDS_BOUNDARY_NN, g_dt);
 }
 
+static void do_vel_step()
+{
+	/* update velocities */
+	fluids_add_buoyancy(g_vs[0], g_smoke_densities[0], g_temperatures[0],
+		0.0, 0.0065, g_temp_ambient, g_dt);
+	swap(g_us);
+	fluids_diffuse(g_us[0], g_us[1], 0.5, 20, FLUIDS_BOUNDARY_REFLECT_U,
+		g_dt);
+	swap(g_vs);
+	fluids_diffuse(g_vs[0], g_vs[1], 0.5, 20, FLUIDS_BOUNDARY_REFLECT_V,
+		g_dt);
+	fluids_project(g_us[0], g_vs[0], FLUIDS_BOUNDARY_REFLECT_U,
+		FLUIDS_BOUNDARY_REFLECT_V, g_pressures, g_vel_divs, 200);
+	swap(g_us);
+	swap(g_vs);
+	fluids_advect(g_us[0], g_us[1] , g_us[1], g_vs[1],
+		FLUIDS_BOUNDARY_REFLECT_U, g_dt);
+	fluids_advect(g_vs[0], g_vs[1] , g_us[1], g_vs[1],
+		FLUIDS_BOUNDARY_REFLECT_V, g_dt);
+	fluids_project(g_us[0], g_vs[0], FLUIDS_BOUNDARY_REFLECT_U,
+		FLUIDS_BOUNDARY_REFLECT_V, g_pressures, g_vel_divs, 200);
+}
+
+
 static void update()
 {
+	//do_smoke_dens_step();
 	do_vel_step();
+	
+	printf("avg div: %f\n", fluids_get_max_divergence(g_us[0], g_vs[1], g_vel_divs));
+	
 	do_temp_step();
 		
 	/* render quantities and velocity */
 	quantity_renderer_render(g_temperatures[0]);
 	velocity_renderer_render(g_us[0], g_vs[0]);
 	
-	printf("%f\n", fluids_sample(g_temperatures[0], -0.1, -0.5));
+//	printf("%f %f\n", fluids_sample(g_temperatures[0], -0.75, -0.75),
+//			fluids_sample(g_us[0], -0.75, -0.75));
 }
 
 static void finalize()
@@ -159,6 +197,12 @@ static void update_temp_source()
 	fluids_set_with_function(g_temp_source, set_temp_src, NULL);
 }
 
+static void update_smoke_dens_source()
+{
+	fluids_set(g_smoke_dens_source, 0.0);
+	fluids_set_with_function(g_smoke_dens_source, set_smoke_dens_src, NULL);
+}
+
 void on_click(GLFWwindow* window, int button, int action, int mods)
 {
 	double x, y;
@@ -169,6 +213,7 @@ void on_click(GLFWwindow* window, int button, int action, int mods)
 		g_cursor_y = g_window_height - y;
 		g_is_clicked = 1;
 		update_temp_source();
+		update_smoke_dens_source();
 	} else {
 		g_is_clicked = 0;
 	}
@@ -180,6 +225,7 @@ void on_move(GLFWwindow* window, double x, double y)
 		g_cursor_x = x;
 		g_cursor_y = g_window_height - y;
 		update_temp_source();
+		update_smoke_dens_source();
 	}
 }
 

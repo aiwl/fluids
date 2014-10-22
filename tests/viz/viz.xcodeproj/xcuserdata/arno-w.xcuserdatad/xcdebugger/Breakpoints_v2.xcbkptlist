@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "221"
             endingLineNumber = "221"
-            landmarkName = "fluids_advect()"
+            landmarkName = "fluids_set()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -47,7 +47,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "197"
             endingLineNumber = "197"
-            landmarkName = "fluids_add_source()"
+            landmarkName = "fluids_sample()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
