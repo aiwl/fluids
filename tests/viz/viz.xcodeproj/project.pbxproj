@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC066AE819F93D3300A6383A /* particles.c in Sources */ = {isa = PBXBuildFile; fileRef = CC066AE719F93D3300A6383A /* particles.c */; };
+		CC066AEB19F9463400A6383A /* particle-renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = CC066AEA19F9463400A6383A /* particle-renderer.c */; };
 		CC103B4A19EE9795000C4E27 /* velocity-renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = CC103B4819EE9795000C4E27 /* velocity-renderer.c */; };
 		CC6C6AC919F7D8560072EECD /* fluids.c in Sources */ = {isa = PBXBuildFile; fileRef = CC6C6AC719F7D8560072EECD /* fluids.c */; };
+		CCB6339D19FA26DC00EED86B /* fire-renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = CCB6339C19FA26DC00EED86B /* fire-renderer.c */; };
 		CCC9B63B19EE753100B3D7FC /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = CCC9B63A19EE753100B3D7FC /* main.c */; };
 		CCC9B63F19EE888B00B3D7FC /* quantity-renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = CCC9B63E19EE888B00B3D7FC /* quantity-renderer.c */; };
 		CCC9B64119EE891100B3D7FC /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC9B64019EE891100B3D7FC /* OpenGL.framework */; };
@@ -30,10 +33,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CC066AE619F938E900A6383A /* particles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = particles.h; path = ../../src/particles.h; sourceTree = "<group>"; };
+		CC066AE719F93D3300A6383A /* particles.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = particles.c; path = ../../src/particles.c; sourceTree = "<group>"; };
+		CC066AE919F9448F00A6383A /* particle-renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "particle-renderer.h"; sourceTree = SOURCE_ROOT; };
+		CC066AEA19F9463400A6383A /* particle-renderer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "particle-renderer.c"; sourceTree = SOURCE_ROOT; };
 		CC103B4819EE9795000C4E27 /* velocity-renderer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "velocity-renderer.c"; sourceTree = SOURCE_ROOT; };
 		CC103B4919EE9795000C4E27 /* velocity-renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "velocity-renderer.h"; sourceTree = SOURCE_ROOT; };
 		CC6C6AC719F7D8560072EECD /* fluids.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fluids.c; path = ../../src/fluids.c; sourceTree = "<group>"; };
 		CC6C6AC819F7D8560072EECD /* fluids.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fluids.h; path = ../../src/fluids.h; sourceTree = "<group>"; };
+		CC6E66E119FC902000E8725A /* fire-colormap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "fire-colormap.h"; sourceTree = SOURCE_ROOT; };
+		CCB6339B19FA26CB00EED86B /* fire-renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "fire-renderer.h"; sourceTree = SOURCE_ROOT; };
+		CCB6339C19FA26DC00EED86B /* fire-renderer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "fire-renderer.c"; sourceTree = SOURCE_ROOT; };
 		CCC9B62C19EE74F600B3D7FC /* viz */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = viz; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCC9B63A19EE753100B3D7FC /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = SOURCE_ROOT; };
 		CCC9B63D19EE885A00B3D7FC /* quantity-renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "quantity-renderer.h"; sourceTree = SOURCE_ROOT; };
@@ -64,6 +74,8 @@
 			children = (
 				CC6C6AC719F7D8560072EECD /* fluids.c */,
 				CC6C6AC819F7D8560072EECD /* fluids.h */,
+				CC066AE619F938E900A6383A /* particles.h */,
+				CC066AE719F93D3300A6383A /* particles.c */,
 			);
 			name = fluids;
 			sourceTree = "<group>";
@@ -91,7 +103,6 @@
 		CCC9B62E19EE74F600B3D7FC /* viz */ = {
 			isa = PBXGroup;
 			children = (
-				CCC9B64A19EE8FD100B3D7FC /* fluids */,
 				CCC9B64519EE898700B3D7FC /* glue */,
 				CCC9B63C19EE884E00B3D7FC /* renderer */,
 				CCC9B63A19EE753100B3D7FC /* main.c */,
@@ -102,10 +113,15 @@
 		CCC9B63C19EE884E00B3D7FC /* renderer */ = {
 			isa = PBXGroup;
 			children = (
+				CC6E66E119FC902000E8725A /* fire-colormap.h */,
 				CC103B4819EE9795000C4E27 /* velocity-renderer.c */,
 				CC103B4919EE9795000C4E27 /* velocity-renderer.h */,
 				CCC9B63D19EE885A00B3D7FC /* quantity-renderer.h */,
 				CCC9B63E19EE888B00B3D7FC /* quantity-renderer.c */,
+				CC066AE919F9448F00A6383A /* particle-renderer.h */,
+				CC066AEA19F9463400A6383A /* particle-renderer.c */,
+				CCB6339B19FA26CB00EED86B /* fire-renderer.h */,
+				CCB6339C19FA26DC00EED86B /* fire-renderer.c */,
 			);
 			name = renderer;
 			sourceTree = "<group>";
@@ -117,13 +133,6 @@
 				CCC9B64319EE897400B3D7FC /* program.h */,
 			);
 			name = glue;
-			sourceTree = "<group>";
-		};
-		CCC9B64A19EE8FD100B3D7FC /* fluids */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = fluids;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -179,9 +188,12 @@
 			files = (
 				CC6C6AC919F7D8560072EECD /* fluids.c in Sources */,
 				CC103B4A19EE9795000C4E27 /* velocity-renderer.c in Sources */,
+				CCB6339D19FA26DC00EED86B /* fire-renderer.c in Sources */,
 				CCC9B63B19EE753100B3D7FC /* main.c in Sources */,
 				CCC9B63F19EE888B00B3D7FC /* quantity-renderer.c in Sources */,
 				CCC9B64419EE897400B3D7FC /* program.c in Sources */,
+				CC066AEB19F9463400A6383A /* particle-renderer.c in Sources */,
+				CC066AE819F93D3300A6383A /* particles.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

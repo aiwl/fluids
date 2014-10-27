@@ -1,10 +1,12 @@
-/*
+/*******************************************************************************
+** fluids.h
+**
 ** Declares several routines useful for simulating fluids using the "Stable
 ** Fluids" approach. 
 ** 
 ** Some notes:
 ** 	- Fluid quantities fields are represented as simple float arrays
-*/ 
+*******************************************************************************/
 #ifndef FLUIDS_H
 #define FLUIDS_H
 
@@ -118,6 +120,17 @@ void fluids_add_buoyancy(float* const v, const float* const smoke_dens,
 	const float* const temperatures, float alpha, float beta, 
 	float temp_ambient, float dt);
 
+
+/*******************************************************************************
+** Vorticity Confinement
+*******************************************************************************/
+/* Adds vorticity confinement to the veloicity field ([u], [v]). The influence
+** of vorticity confinement is given by [eps]. Temporary results for vorticity
+** (magnitude) and the normalized vorticity gradient are stored in [vorticity] 
+** and ([nvg_x], [nvg_y]) respectively. */
+void fluids_add_vorticity_confinement(float* const u, float* const v,
+	float* const vorticity, float* const nvg_x, float* const nvg_y,
+	float eps, float dt);
 
 /******************************************************************************
 ** Statistics

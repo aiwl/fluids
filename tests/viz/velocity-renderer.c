@@ -10,7 +10,7 @@
 /* shader */
 
 #define TO_STRING(x) #x
-const char* g_vertex_shader = "#version 150\n"
+static const char* g_vertex_shader = "#version 150\n"
 TO_STRING(
 	in float in_u; // velocities u component
 	in float in_v; // velocities v component
@@ -59,7 +59,7 @@ TO_STRING(
 	}
 );
 
-const char* g_geometry_shader = "#version 150\n"
+static const char* g_geometry_shader = "#version 150\n"
 TO_STRING(
 	layout (points) in;
 	layout (line_strip, max_vertices = 2) out;
@@ -81,7 +81,7 @@ TO_STRING(
 	}
 );
 
-const char* g_fragment_shader = "#version 150\n"
+static const char* g_fragment_shader = "#version 150\n"
 TO_STRING(
 	flat in int g_is_discarded;
 	

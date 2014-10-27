@@ -1,6 +1,12 @@
 #include "fluids.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <float.h>
+#include <math.h>
+
+
+/* a small float. mainly to avoid division by zero */
+#define EPS FLT_MIN
 
 /* grid */
 
@@ -386,10 +392,65 @@ void fluids_add_buoyancy(float* const v, const float* const smoke_dens,
 {
 	int i = 0, j = 0;
 
+//	for (j = 1; j < g_cell_count_j - 1; j++) {
+//		for (i = 1; i < g_cell_count_i - 1; i++) {
+//			v[IDX(i,j)] -= dt * (alpha * smoke_dens[IDX(i,j)] -
+//				beta * (temperatures[IDX(i, j)] - temp_ambient));
+//		}
+//	}
+
+	for (j = 0; j < g_cell_count_j; j++) {
+		for (i = 0; i < g_cell_count_i; i++) {
+			v[IDX(i,j)] -= dt * (alpha * smoke_dens[IDX(i,j)] -
+				beta * (temperatures[IDX(i, j)] - temp_ambient));
+		}
+	}
+}
+
+void fluids_add_vorticity_confinement(float* const u, float* const v,
+	float* const vorticity, float* const nvg_x, float* const nvg_y,
+	float eps, float dt)
+{
+	int i = 0, j = 0;
+	float gx, gy, gm;
+	float a = 1.0 / (2.0 * g_dx);
+	float b = eps * dt * g_dx;
+
+	/* compute vorticity */
 	for (j = 1; j < g_cell_count_j - 1; j++) {
 		for (i = 1; i < g_cell_count_i - 1; i++) {
-			v[IDX(i,j)] -= dt * (alpha * smoke_dens[IDX(i,j)] - 
-				beta * (temperatures[IDX(i,j )] - temp_ambient)); 
+			vorticity[IDX(i, j)] =
+				a * ((v[IDX(i + 1, j)] - v[IDX(i - 1, j)]) -
+				(u[IDX(i, j + 1)] - u[IDX(i, j - 1)]));
+		}
+	}
+	
+	printf("vort: %f == %f\n", vorticity[IDX(80, 50)], vorticity[IDX(20, 50)]);
+	
+	/* compute normalized vorticity gradient */
+	for (j = 1; j < g_cell_count_j - 1; j++) {
+		for (i = 1; i < g_cell_count_i - 1; i++) {
+			gx = a * (fabs(vorticity[IDX(i + 1, j)]) -
+				fabs(vorticity[IDX(i - 1, j)]));
+			gy = a * (fabs(vorticity[IDX(i, j + 1)]) -
+				fabs(vorticity[IDX(i, j - 1)]));
+			gm = sqrtf(gx * gx + gy * gy);
+			nvg_x[IDX(i, j)] = gx / (gm + EPS);
+			nvg_y[IDX(i, j)] = gy / (gm + EPS);
+		}
+	}
+
+	/* add contribution of vorticity confinement to the velocity */
+	for (j = 1; j < g_cell_count_j - 1; j++) {
+		for (i = 1; i < g_cell_count_i - 1; i++) {
+			u[IDX(i, j)] += b * vorticity[IDX(i, j)] *
+				nvg_y[IDX(i, j)];
+			v[IDX(i, j)] -= b * vorticity[IDX(i, j)] *
+				nvg_x[IDX(i, j)];
+//				
+//			if (nvg_x[IDX(i, j)] < 0.0) {
+//				puts("negative");
+//			}
 		}
 	}
 }
