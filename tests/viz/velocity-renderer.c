@@ -159,7 +159,7 @@ void velocity_renderer_initialize(int cell_count_i, int cell_count_j, float dx)
 }
 
 void velocity_renderer_render(const float* const u, const float* const v)
-{
+{	
 	glBindBuffer(GL_ARRAY_BUFFER, g_u_buffer);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, g_buffer_size, u);
 	glBindBuffer(GL_ARRAY_BUFFER, g_v_buffer);

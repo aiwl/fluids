@@ -54,11 +54,13 @@ static float g_cursor_y = 400;
 /* quantity initializer functions */
 static float set_temp_src(float x, float y, void* const vp)
 {
-	float r = 0.125;
+	float r = 1.0;
+	float a = 0.05;
+	float b = 0.1;
 	float x0 = g_origin_x + (g_cursor_x / g_window_width) * g_cell_count_i * g_dx;
 	float y0 = g_origin_y + (g_cursor_y / g_window_height) * g_cell_count_j * g_dx;
 	
-	if ((x - x0) * (x - x0) + (y - y0) * (y - y0) <= r * r) {
+	if ((x - x0) / a * (x - x0) / a + (y - y0) / b * (y - y0) / b <= r * r) {
 		return 1.0;
 	}
 	
@@ -67,12 +69,14 @@ static float set_temp_src(float x, float y, void* const vp)
 
 static float set_smoke_dens_src(float x, float y, void* const vp)
 {
-	float r = 0.125;
+	float r = 1.0;
+	float a = 0.05;
+	float b = 0.1;
 	float x0 = g_origin_x + (g_cursor_x / g_window_width) * g_cell_count_i * g_dx;
 	float y0 = g_origin_y + (g_cursor_y / g_window_height) * g_cell_count_j * g_dx;
 	
-	if ((x - x0) * (x - x0) + (y - y0) * (y - y0) <= r * r) {
-		return 0.5;
+	if ((x - x0) / a * (x - x0) / a + (y - y0) / b * (y - y0) / b <= r * r) {
+		return 0.75;
 	}
 	
 	return 0.0;
@@ -87,7 +91,7 @@ void swap(float** q)
 
 static float eval_alph_dist(float x)
 {
-	return x * x;
+	return powf(x, 1.2);
 }
 
 static void initialize()
