@@ -3,11 +3,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <fire-renderer.h>
+#include "fire-renderer.h"
 #include "fire-colormap.h"
 
 #ifdef __APPLE__
 	#include <OpenGL/gl3.h>
+#else 
+	#include <GL/glew.h>
 #endif
 
 /******************************************************************************/
@@ -44,12 +46,12 @@ TO_STRING(
 	
 	void main()
 	{
-		float t = 1.0 - (texture(u_temperature, vout_tex_coord).r - u_temp_min) / (u_temp_max - u_temp_min);
+		float t = 1.0 - (texture(u_temperature, vout_tex_coord).r - 
+			u_temp_min) / (u_temp_max - u_temp_min);
 		t = clamp(t, 0.01, 0.99);
 		vec3 c = texture(u_firemap, t).rgb;
 		float sd = clamp(texture(u_smoke_density,
 			vout_tex_coord).r, 0.0, 0.99);
-		
 		float a = texture(u_alpha_spec, sd).r;
 		fout_frag_color = vec4(c, a);
 	}
@@ -140,7 +142,7 @@ static void init_textures(GLsizei width, GLsizei height)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED,
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED,
 		GL_FLOAT, NULL);
 
 	glGenTextures(1, &g_smoke_dens_tex);
@@ -170,9 +172,8 @@ static void init_textures(GLsizei width, GLsizei height)
 	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexImage1D(GL_TEXTURE_1D, 0, GL_RGB,
-		sizeof(g_fire_colormap) / (3 * sizeof(unsigned char)), 0,
+		(sizeof(g_fire_colormap)) / (3 * sizeof(unsigned char)), 0,
 		GL_RGB, GL_UNSIGNED_BYTE, g_fire_colormap);
-		
 	assert(GL_NO_ERROR == glGetError());
 }
 

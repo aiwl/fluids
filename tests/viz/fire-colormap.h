@@ -1,6 +1,14 @@
 #ifndef FIRE_COLORMAP_H
 #define FIRE_COLORMAP_H
 
+static float g_fire_colormap2[] = {
+	0.0, 1.0, 0.0,
+	0.0, 1.0, 0.0,
+	0.0, 1.0, 0.0,
+	0.0, 1.0, 0.0,
+	0.0, 1.0, 0.0
+};
+
 static unsigned char g_fire_colormap[] = {
 	255,255,255,
 	255,255,253,
