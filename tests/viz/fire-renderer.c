@@ -47,7 +47,7 @@ TO_STRING(
 	
 	void main()
 	{
-		float ic = texture(u_ignition_coord, vout_tex_coord);
+		float ic = texture(u_ignition_coord, vout_tex_coord).r;
 		ic = clamp(ic, 0.0, 1.0);
 		float ic_idx = 1.0 - ic;
 		//float t = 1.0 - (texture(u_temperature, vout_tex_coord).r - 
