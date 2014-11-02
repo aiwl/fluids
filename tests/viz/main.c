@@ -12,8 +12,8 @@
 #include "../../src/particles.h"
 
 /* window settings */
-static int g_window_width = 800;
-static int g_window_height = 800;
+static int g_window_width = 600;
+static int g_window_height = 600;
 
 /* fluid domain declarations */
 static float g_origin_x = -1.0;
@@ -23,6 +23,7 @@ static int g_cell_count_i = 100;
 static int g_cell_count_j = 100;
 
 /* fluid quantities */
+static float* g_ignition_coordinate[2];
 static float* g_temperatures[2];
 static float* g_smoke_densities[2];
 static float* g_us[2];
@@ -37,6 +38,7 @@ static float* g_nvg_y;
 static float g_vort_eps = 10.0;
 
 /* quantity sources */
+static float* g_ignition_coord_source;
 static float* g_temp_source;
 static float* g_smoke_dens_source;
 
@@ -46,17 +48,28 @@ static const float g_temp_ambient = 300.0;
 static const float g_temp_target = 700.0;
 static const float g_dt = 0.08;
 
+static const float g_elipse_a = 0.06;
+static const float g_elipse_b = 0.1;
+
 /* user input */
 static int g_is_clicked = 0;
 static float g_cursor_x = 400;
 static float g_cursor_y = 400;
 
+/* renderer settings */
+enum {
+	FIRE = 0,
+	TEMPERATURE
+};
+
+static int g_render_mode = FIRE;
+
 /* quantity initializer functions */
 static float set_temp_src(float x, float y, void* const vp)
 {
 	float r = 1.0;
-	float a = 0.05;
-	float b = 0.1;
+	float a = g_elipse_a;
+	float b = g_elipse_b;
 	float x0 = g_origin_x + (g_cursor_x / g_window_width) * g_cell_count_i * g_dx;
 	float y0 = g_origin_y + (g_cursor_y / g_window_height) * g_cell_count_j * g_dx;
 	
@@ -70,8 +83,8 @@ static float set_temp_src(float x, float y, void* const vp)
 static float set_smoke_dens_src(float x, float y, void* const vp)
 {
 	float r = 1.0;
-	float a = 0.05;
-	float b = 0.1;
+	float a = g_elipse_a;
+	float b = g_elipse_b;
 	float x0 = g_origin_x + (g_cursor_x / g_window_width) * g_cell_count_i * g_dx;
 	float y0 = g_origin_y + (g_cursor_y / g_window_height) * g_cell_count_j * g_dx;
 	
@@ -79,6 +92,21 @@ static float set_smoke_dens_src(float x, float y, void* const vp)
 		return 0.75;
 	}
 	
+	return 0.0;
+}
+
+static float set_ignition_coordiate(float x, float y, void* const vp)
+{
+	float r = 1.0;
+	float a = g_elipse_a;
+	float b = g_elipse_b;
+	float x0 = g_origin_x + (g_cursor_x / g_window_width) * g_cell_count_i * g_dx;
+	float y0 = g_origin_y + (g_cursor_y / g_window_height) * g_cell_count_j * g_dx;
+
+	if ((x - x0) / a * (x - x0) / a + (y - y0) / b * (y - y0) / b <= r * r) {
+		return 1;
+	}
+
 	return 0.0;
 }
 
@@ -102,10 +130,13 @@ static void initialize()
 		g_cell_count_j);
 
 	/* init fluid quantities */
+	g_ignition_coordinate[0] = fluids_malloc(0.0);
+	g_ignition_coordinate[1] = fluids_malloc(0.0);
 	g_temperatures[0] = fluids_malloc(273.0);
 	g_temperatures[1] = fluids_malloc(273.0);
 	g_smoke_densities[0] = fluids_malloc(0.0);
 	g_smoke_densities[1] = fluids_malloc(0.0);
+	g_ignition_coord_source = fluids_malloc(0.0);
 	g_us[0] = fluids_malloc(0.0);
 	g_us[1] = fluids_malloc(0.0);
 	g_vs[0] = fluids_malloc(0.0);
@@ -121,7 +152,8 @@ static void initialize()
 	/* init sources */
 	g_temp_source = fluids_malloc(0);
 	g_smoke_dens_source = fluids_malloc(0);
-	
+	g_ignition_coord_source = fluids_malloc(0);
+
 	/* init particles */
 	particles_initialize();
 	particles_set_lifetime(3.0);
@@ -138,6 +170,19 @@ static void initialize()
 	fire_renderer_initialize(g_cell_count_i, g_cell_count_j);
 	fire_renderer_set_alpha_spec(eval_alph_dist);
 	fire_renderer_set_temperature_bounds(g_temp_init, g_temp_target);
+}
+
+static void do_ignition_coord_step()
+{
+	if (g_is_clicked) {
+		fluids_add_source_clamped(g_ignition_coordinate[0], g_ignition_coord_source, 
+			1.0, 0.0, 1.0);
+	}
+
+	fluids_add_source_uniform(g_ignition_coordinate[0], -0.8, g_dt);
+	swap(g_ignition_coordinate);
+	fluids_advect(g_ignition_coordinate[0], g_ignition_coordinate[1], g_us[0],
+		g_vs[0], FLUIDS_BOUNDARY_NN, g_dt);
 }
 
 static void do_smoke_dens_step()
@@ -205,26 +250,28 @@ static void do_vel_step()
 
 static void update()
 {
+	do_ignition_coord_step();
 	do_smoke_dens_step();
 	do_temp_step();
 	do_vel_step();
 
-	
-//	printf("avg div: %f\n", fluids_get_max_divergence(g_us[0], g_vs[1], g_vel_divs));
-	
-			
 	/* render quantities and velocity */
 	glClear(GL_COLOR_BUFFER_BIT);
 	const float c = 1.0;
 	glClearColor(c, c, c, 1.0);
-	
-//	quantity_renderer_set_quantity_domain(g_temp_init, g_temp_target);
-//	quantity_renderer_render(g_temperatures[0]);
-//	quantity_renderer_set_quantity_domain(0.0, 1.0);
-//	quantity_renderer_render(g_smoke_densities[0]);
-	velocity_renderer_render(g_us[0], g_vs[0]);
 
-	fire_renderer_render(g_smoke_densities[0], g_temperatures[0]);
+	switch (g_render_mode) {
+	case TEMPERATURE: 
+		quantity_renderer_set_quantity_domain(g_temp_init, g_temp_target);
+		quantity_renderer_render(g_temperatures[0]);
+		break;
+	case FIRE:
+		fire_renderer_render(g_smoke_densities[0], g_temperatures[0],
+			g_ignition_coordinate[0]);
+		break;
+	}
+
+	velocity_renderer_render(g_us[0], g_vs[0]);
 	
 //	if (g_is_clicked) {
 //		particles_emit(800);
@@ -242,6 +289,9 @@ static void update()
 
 static void finalize()
 {
+	free(g_ignition_coord_source);
+	free(g_ignition_coordinate[0]);
+	free(g_ignition_coordinate[1]);
 	free(g_temperatures[0]);
 	free(g_temperatures[1]);
 	free(g_us[0]);
@@ -277,6 +327,13 @@ static void update_smoke_dens_source()
 	fluids_set_with_function(g_smoke_dens_source, set_smoke_dens_src, NULL);
 }
 
+static void update_ignition_coord_source()
+{
+	fluids_set(g_ignition_coord_source, 0.0);
+	fluids_set_with_function(g_ignition_coord_source,
+		set_ignition_coordiate, NULL);
+}
+
 void on_click(GLFWwindow* window, int button, int action, int mods)
 {
 	double x, y;
@@ -289,6 +346,7 @@ void on_click(GLFWwindow* window, int button, int action, int mods)
 		update_particle_emitter();
 		update_temp_source();
 		update_smoke_dens_source();
+		update_ignition_coord_source();
 	} else {
 		g_is_clicked = 0;
 	}
@@ -302,6 +360,23 @@ void on_move(GLFWwindow* window, double x, double y)
 		update_particle_emitter();
 		update_temp_source();
 		update_smoke_dens_source();
+		update_ignition_coord_source();
+	}
+}
+
+void on_key_down(GLFWwindow* window, int key, int scancode, int action,
+	int mods)
+{
+	if (action != GLFW_PRESS) {
+		return;
+	}
+
+	if (key == GLFW_KEY_T) {
+		g_render_mode = TEMPERATURE;
+	}
+
+	if (key == GLFW_KEY_F) {
+		g_render_mode = FIRE;
 	}
 }
 
@@ -344,6 +419,7 @@ int main(void)
 	
 	glfwSetMouseButtonCallback(window, on_click);
 	glfwSetCursorPosCallback(window, on_move);
+	glfwSetKeyCallback(window, on_key_down);
 	
 	initialize();
 	

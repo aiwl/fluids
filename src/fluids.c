@@ -4,7 +4,6 @@
 #include <float.h>
 #include <math.h>
 
-
 /* a small float. mainly to avoid division by zero */
 #define EPS FLT_MIN
 
@@ -244,6 +243,19 @@ void fluids_set_with_function(float* const q,
 	}
 }
 
+void fluids_add_source_uniform(float* const q, float s, float alpha)
+{
+	int i = 0, j = 0;
+	int idx = 0;
+
+	for (j = 0; j < g_cell_count_j; j++) {
+		for (i = 0; i < g_cell_count_i; i++) {
+			idx = IDX(i, j);
+			q[idx] += alpha * s;
+		}
+	}
+}
+
 void fluids_add_source_clamped(float* const q, const float* const source,
 	float alpha, float q_min, float q_max)
 {
@@ -425,8 +437,6 @@ void fluids_add_vorticity_confinement(float* const u, float* const v,
 		}
 	}
 	
-	printf("vort: %f == %f\n", vorticity[IDX(80, 50)], vorticity[IDX(20, 50)]);
-	
 	/* compute normalized vorticity gradient */
 	for (j = 1; j < g_cell_count_j - 1; j++) {
 		for (i = 1; i < g_cell_count_i - 1; i++) {
@@ -447,10 +457,6 @@ void fluids_add_vorticity_confinement(float* const u, float* const v,
 				nvg_y[IDX(i, j)];
 			v[IDX(i, j)] -= b * vorticity[IDX(i, j)] *
 				nvg_x[IDX(i, j)];
-//				
-//			if (nvg_x[IDX(i, j)] < 0.0) {
-//				puts("negative");
-//			}
 		}
 	}
 }

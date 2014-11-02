@@ -45,6 +45,11 @@ void fluids_set_with_function(float* const q,
 ******************************************************************************/
 /* Applies a source [source] to a quantity field [q]. [alpha] describes the
 ** amount of the source added to the quantity. Each value q in [quantities] is
+** incremented by the scalar [s] weighted by [alpha]. */
+void fluids_add_source_uniform(float* const q, float s, float alpha);
+
+/* Applies a source [source] to a quantity field [q]. [alpha] describes the
+** amount of the source added to the quantity. Each value q in [quantities] is
 ** incremented by [alpha] * s, where s is the source corresponding to q in
 ** [source]. */
 void fluids_add_source(float* const q, const float* const source, float alpha);

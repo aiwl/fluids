@@ -10,7 +10,8 @@ void fire_renderer_initialize(int cell_count_i, int cell_count_j);
 void fire_renderer_set_alpha_spec(float (*spec)(float x));
 void fire_renderer_set_temperature_bounds(float min, float max);
 void fire_renderer_render(const float* const smoke_densities,
-	const float* const temperatures);
+	const float* const temperatures, 
+	const float* const iginition_coordinates);
 void fire_renderer_finalize();
 
 #ifdef __cplusplus
