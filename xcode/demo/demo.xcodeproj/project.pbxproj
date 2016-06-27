@@ -9,15 +9,17 @@
 /* Begin PBXBuildFile section */
 		0A295D261B5FC7E4006B1389 /* fluids.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A295D221B5FC7E4006B1389 /* fluids.c */; };
 		0A295D271B5FC7E4006B1389 /* particles.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A295D241B5FC7E4006B1389 /* particles.c */; };
-		0A295D341B5FC7EF006B1389 /* fire-renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A295D291B5FC7EF006B1389 /* fire-renderer.c */; };
-		0A295D351B5FC7EF006B1389 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A295D2B1B5FC7EF006B1389 /* main.c */; };
-		0A295D361B5FC7EF006B1389 /* particle-renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A295D2C1B5FC7EF006B1389 /* particle-renderer.c */; };
-		0A295D371B5FC7EF006B1389 /* program.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A295D2E1B5FC7EF006B1389 /* program.c */; };
-		0A295D381B5FC7EF006B1389 /* quantity-renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A295D301B5FC7EF006B1389 /* quantity-renderer.c */; };
-		0A295D391B5FC7EF006B1389 /* velocity-renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A295D321B5FC7EF006B1389 /* velocity-renderer.c */; };
 		0A295D411B5FC8FB006B1389 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A295D401B5FC8FB006B1389 /* OpenGL.framework */; };
-		0A295D491B5FC9B4006B1389 /* libglfw.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A295D481B5FC9B4006B1389 /* libglfw.3.1.dylib */; };
-		0A295D4B1B5FC9E0006B1389 /* libGLEW.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A295D4A1B5FC9E0006B1389 /* libGLEW.a */; };
+		CC935C231CFFE110005CC21E /* fire-renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = CC935C181CFFE110005CC21E /* fire-renderer.c */; };
+		CC935C241CFFE110005CC21E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = CC935C1A1CFFE110005CC21E /* main.c */; };
+		CC935C251CFFE110005CC21E /* particle-renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = CC935C1B1CFFE110005CC21E /* particle-renderer.c */; };
+		CC935C261CFFE110005CC21E /* program.c in Sources */ = {isa = PBXBuildFile; fileRef = CC935C1D1CFFE110005CC21E /* program.c */; };
+		CC935C271CFFE110005CC21E /* quantity-renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = CC935C1F1CFFE110005CC21E /* quantity-renderer.c */; };
+		CC935C281CFFE110005CC21E /* velocity-renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = CC935C211CFFE110005CC21E /* velocity-renderer.c */; };
+		CC935C2A1CFFE1FA005CC21E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC935C291CFFE1FA005CC21E /* CoreGraphics.framework */; };
+		CC935C2C1CFFE204005CC21E /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC935C2B1CFFE204005CC21E /* AppKit.framework */; };
+		CC935C2E1CFFE20A005CC21E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC935C2D1CFFE20A005CC21E /* CoreVideo.framework */; };
+		CC935C301CFFE217005CC21E /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC935C2F1CFFE217005CC21E /* IOKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,22 +40,23 @@
 		0A295D231B5FC7E4006B1389 /* fluids.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fluids.h; path = ../../src/fluids.h; sourceTree = "<group>"; };
 		0A295D241B5FC7E4006B1389 /* particles.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = particles.c; path = ../../src/particles.c; sourceTree = "<group>"; };
 		0A295D251B5FC7E4006B1389 /* particles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = particles.h; path = ../../src/particles.h; sourceTree = "<group>"; };
-		0A295D281B5FC7EF006B1389 /* fire-colormap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "fire-colormap.h"; path = "../../../demo/fire-colormap.h"; sourceTree = "<group>"; };
-		0A295D291B5FC7EF006B1389 /* fire-renderer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "fire-renderer.c"; path = "../../../demo/fire-renderer.c"; sourceTree = "<group>"; };
-		0A295D2A1B5FC7EF006B1389 /* fire-renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "fire-renderer.h"; path = "../../../demo/fire-renderer.h"; sourceTree = "<group>"; };
-		0A295D2B1B5FC7EF006B1389 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../../../demo/main.c; sourceTree = "<group>"; };
-		0A295D2C1B5FC7EF006B1389 /* particle-renderer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "particle-renderer.c"; path = "../../../demo/particle-renderer.c"; sourceTree = "<group>"; };
-		0A295D2D1B5FC7EF006B1389 /* particle-renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "particle-renderer.h"; path = "../../../demo/particle-renderer.h"; sourceTree = "<group>"; };
-		0A295D2E1B5FC7EF006B1389 /* program.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = program.c; path = ../../../demo/program.c; sourceTree = "<group>"; };
-		0A295D2F1B5FC7EF006B1389 /* program.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = program.h; path = ../../../demo/program.h; sourceTree = "<group>"; };
-		0A295D301B5FC7EF006B1389 /* quantity-renderer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "quantity-renderer.c"; path = "../../../demo/quantity-renderer.c"; sourceTree = "<group>"; };
-		0A295D311B5FC7EF006B1389 /* quantity-renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "quantity-renderer.h"; path = "../../../demo/quantity-renderer.h"; sourceTree = "<group>"; };
-		0A295D321B5FC7EF006B1389 /* velocity-renderer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "velocity-renderer.c"; path = "../../../demo/velocity-renderer.c"; sourceTree = "<group>"; };
-		0A295D331B5FC7EF006B1389 /* velocity-renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "velocity-renderer.h"; path = "../../../demo/velocity-renderer.h"; sourceTree = "<group>"; };
-		0A295D3C1B5FC83E006B1389 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = /Users/arnoluebke/Documents/libs/glfw/lib; sourceTree = "<absolute>"; };
 		0A295D401B5FC8FB006B1389 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		0A295D481B5FC9B4006B1389 /* libglfw.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.1.dylib; path = ../../../../libs/glfw/lib/libglfw.3.1.dylib; sourceTree = "<group>"; };
-		0A295D4A1B5FC9E0006B1389 /* libGLEW.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGLEW.a; path = ../../../../libs/glew/lib/libGLEW.a; sourceTree = "<group>"; };
+		CC935C171CFFE110005CC21E /* fire-colormap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "fire-colormap.h"; path = "/Users/aiwl/Documents/code/projects/fluids/demo/fire-colormap.h"; sourceTree = "<absolute>"; };
+		CC935C181CFFE110005CC21E /* fire-renderer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "fire-renderer.c"; path = "/Users/aiwl/Documents/code/projects/fluids/demo/fire-renderer.c"; sourceTree = "<absolute>"; };
+		CC935C191CFFE110005CC21E /* fire-renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "fire-renderer.h"; path = "/Users/aiwl/Documents/code/projects/fluids/demo/fire-renderer.h"; sourceTree = "<absolute>"; };
+		CC935C1A1CFFE110005CC21E /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = /Users/aiwl/Documents/code/projects/fluids/demo/main.c; sourceTree = "<absolute>"; };
+		CC935C1B1CFFE110005CC21E /* particle-renderer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "particle-renderer.c"; path = "/Users/aiwl/Documents/code/projects/fluids/demo/particle-renderer.c"; sourceTree = "<absolute>"; };
+		CC935C1C1CFFE110005CC21E /* particle-renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "particle-renderer.h"; path = "/Users/aiwl/Documents/code/projects/fluids/demo/particle-renderer.h"; sourceTree = "<absolute>"; };
+		CC935C1D1CFFE110005CC21E /* program.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = program.c; path = /Users/aiwl/Documents/code/projects/fluids/demo/program.c; sourceTree = "<absolute>"; };
+		CC935C1E1CFFE110005CC21E /* program.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = program.h; path = /Users/aiwl/Documents/code/projects/fluids/demo/program.h; sourceTree = "<absolute>"; };
+		CC935C1F1CFFE110005CC21E /* quantity-renderer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "quantity-renderer.c"; path = "/Users/aiwl/Documents/code/projects/fluids/demo/quantity-renderer.c"; sourceTree = "<absolute>"; };
+		CC935C201CFFE110005CC21E /* quantity-renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "quantity-renderer.h"; path = "/Users/aiwl/Documents/code/projects/fluids/demo/quantity-renderer.h"; sourceTree = "<absolute>"; };
+		CC935C211CFFE110005CC21E /* velocity-renderer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "velocity-renderer.c"; path = "/Users/aiwl/Documents/code/projects/fluids/demo/velocity-renderer.c"; sourceTree = "<absolute>"; };
+		CC935C221CFFE110005CC21E /* velocity-renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "velocity-renderer.h"; path = "/Users/aiwl/Documents/code/projects/fluids/demo/velocity-renderer.h"; sourceTree = "<absolute>"; };
+		CC935C291CFFE1FA005CC21E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CC935C2B1CFFE204005CC21E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		CC935C2D1CFFE20A005CC21E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		CC935C2F1CFFE217005CC21E /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,9 +64,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC935C301CFFE217005CC21E /* IOKit.framework in Frameworks */,
+				CC935C2E1CFFE20A005CC21E /* CoreVideo.framework in Frameworks */,
+				CC935C2C1CFFE204005CC21E /* AppKit.framework in Frameworks */,
+				CC935C2A1CFFE1FA005CC21E /* CoreGraphics.framework in Frameworks */,
 				0A295D411B5FC8FB006B1389 /* OpenGL.framework in Frameworks */,
-				0A295D4B1B5FC9E0006B1389 /* libGLEW.a in Frameworks */,
-				0A295D491B5FC9B4006B1389 /* libglfw.3.1.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,10 +78,11 @@
 		0A295D0E1B5FC7B9006B1389 = {
 			isa = PBXGroup;
 			children = (
-				0A295D4A1B5FC9E0006B1389 /* libGLEW.a */,
-				0A295D481B5FC9B4006B1389 /* libglfw.3.1.dylib */,
+				CC935C2F1CFFE217005CC21E /* IOKit.framework */,
+				CC935C2D1CFFE20A005CC21E /* CoreVideo.framework */,
+				CC935C2B1CFFE204005CC21E /* AppKit.framework */,
+				CC935C291CFFE1FA005CC21E /* CoreGraphics.framework */,
 				0A295D401B5FC8FB006B1389 /* OpenGL.framework */,
-				0A295D3C1B5FC83E006B1389 /* lib */,
 				0A295D211B5FC7CF006B1389 /* fluids */,
 				0A295D191B5FC7B9006B1389 /* demo */,
 				0A295D181B5FC7B9006B1389 /* Products */,
@@ -94,21 +100,22 @@
 		0A295D191B5FC7B9006B1389 /* demo */ = {
 			isa = PBXGroup;
 			children = (
-				0A295D281B5FC7EF006B1389 /* fire-colormap.h */,
-				0A295D291B5FC7EF006B1389 /* fire-renderer.c */,
-				0A295D2A1B5FC7EF006B1389 /* fire-renderer.h */,
-				0A295D2B1B5FC7EF006B1389 /* main.c */,
-				0A295D2C1B5FC7EF006B1389 /* particle-renderer.c */,
-				0A295D2D1B5FC7EF006B1389 /* particle-renderer.h */,
-				0A295D2E1B5FC7EF006B1389 /* program.c */,
-				0A295D2F1B5FC7EF006B1389 /* program.h */,
-				0A295D301B5FC7EF006B1389 /* quantity-renderer.c */,
-				0A295D311B5FC7EF006B1389 /* quantity-renderer.h */,
-				0A295D321B5FC7EF006B1389 /* velocity-renderer.c */,
-				0A295D331B5FC7EF006B1389 /* velocity-renderer.h */,
+				CC935C171CFFE110005CC21E /* fire-colormap.h */,
+				CC935C181CFFE110005CC21E /* fire-renderer.c */,
+				CC935C191CFFE110005CC21E /* fire-renderer.h */,
+				CC935C1A1CFFE110005CC21E /* main.c */,
+				CC935C1B1CFFE110005CC21E /* particle-renderer.c */,
+				CC935C1C1CFFE110005CC21E /* particle-renderer.h */,
+				CC935C1D1CFFE110005CC21E /* program.c */,
+				CC935C1E1CFFE110005CC21E /* program.h */,
+				CC935C1F1CFFE110005CC21E /* quantity-renderer.c */,
+				CC935C201CFFE110005CC21E /* quantity-renderer.h */,
+				CC935C211CFFE110005CC21E /* velocity-renderer.c */,
+				CC935C221CFFE110005CC21E /* velocity-renderer.h */,
 			);
-			path = demo;
-			sourceTree = "<group>";
+			name = demo;
+			path = /Users/aiwl/Documents/code/projects/fluids/demo;
+			sourceTree = "<absolute>";
 		};
 		0A295D211B5FC7CF006B1389 /* fluids */ = {
 			isa = PBXGroup;
@@ -177,14 +184,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A295D351B5FC7EF006B1389 /* main.c in Sources */,
-				0A295D361B5FC7EF006B1389 /* particle-renderer.c in Sources */,
-				0A295D371B5FC7EF006B1389 /* program.c in Sources */,
+				CC935C241CFFE110005CC21E /* main.c in Sources */,
+				CC935C251CFFE110005CC21E /* particle-renderer.c in Sources */,
+				CC935C261CFFE110005CC21E /* program.c in Sources */,
 				0A295D261B5FC7E4006B1389 /* fluids.c in Sources */,
-				0A295D341B5FC7EF006B1389 /* fire-renderer.c in Sources */,
-				0A295D381B5FC7EF006B1389 /* quantity-renderer.c in Sources */,
+				CC935C231CFFE110005CC21E /* fire-renderer.c in Sources */,
+				CC935C271CFFE110005CC21E /* quantity-renderer.c in Sources */,
 				0A295D271B5FC7E4006B1389 /* particles.c in Sources */,
-				0A295D391B5FC7EF006B1389 /* velocity-renderer.c in Sources */,
+				CC935C281CFFE110005CC21E /* velocity-renderer.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,15 +282,16 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"~/Documents/libs/glew/include",
-					"~/Documents/libs/glfw/include",
+					/usr/local/include,
+					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/arnoluebke/Documents/libs/glew-1.12.0/lib",
-					/Users/arnoluebke/Documents/libs/glfw3.1/lib,
-					/Users/arnoluebke/Documents/libs/glew/lib,
-					/Users/arnoluebke/Documents/libs/glfw/lib,
+					/usr/local/lib,
+				);
+				OTHER_LDFLAGS = (
+					"-lGLEW",
+					"-lGLFW3",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -296,15 +304,16 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"~/Documents/libs/glew/include",
-					"~/Documents/libs/glfw/include",
+					/usr/local/include,
+					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/arnoluebke/Documents/libs/glew-1.12.0/lib",
-					/Users/arnoluebke/Documents/libs/glfw3.1/lib,
-					/Users/arnoluebke/Documents/libs/glew/lib,
-					/Users/arnoluebke/Documents/libs/glfw/lib,
+					/usr/local/lib,
+				);
+				OTHER_LDFLAGS = (
+					"-lGLEW",
+					"-lGLFW3",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -329,6 +338,7 @@
 				0A295D201B5FC7B9006B1389 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
